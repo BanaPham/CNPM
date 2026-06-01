@@ -14,12 +14,12 @@ public class LoanRecordDAO extends DAO {
 
     public LoanDetail getActiveLoanDetail(model.Item item) {
         LoanDetail detail = null;
-        String sql = "SELECT ld.id as detail_id, ld.actualReturnDate, ld.fineAmount, ld.statusNotes, " +
-                     "lr.id as record_id, lr.borrowDate, lr.dueDate, p.id as patron_id, p.fullName, p.cardNumber " +
-                     "FROM tblLoanDetail ld " +
-                     "INNER JOIN tblLoanRecord lr ON ld.loanRecordId = lr.id " +
-                     "INNER JOIN tblPatron p ON lr.patronId = p.id " +
-                     "WHERE ld.itemId = ? AND ld.actualReturnDate IS NULL";
+        String sql = "SELECT ld.id as detail_id, ld.actual_return_date as actualReturnDate, ld.fine_amount as fineAmount, ld.status_notes as statusNotes, " +
+                     "lr.id as record_id, lr.loan_date as borrowDate, lr.due_date as dueDate, p.id as patron_id, p.full_name as fullName, p.card_number as cardNumber " +
+                     "FROM tblloandetail ld " +
+                     "INNER JOIN tblloanrecord lr ON ld.loan_record_id = lr.id " +
+                     "INNER JOIN tblpatron p ON lr.patron_id = p.id " +
+                     "WHERE ld.item_id = ? AND ld.actual_return_date IS NULL";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, item.getId());
@@ -50,7 +50,7 @@ public class LoanRecordDAO extends DAO {
 
     public boolean returnLoanDetail(LoanDetail detail) {
         boolean result = false;
-        String sql = "UPDATE tblLoanDetail SET actualReturnDate = ? WHERE id = ?";
+        String sql = "UPDATE tblloandetail SET actual_return_date = ? WHERE id = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             if (detail.getReturnDate() != null) {
@@ -71,7 +71,7 @@ public class LoanRecordDAO extends DAO {
 
     public boolean updateFine(LoanRecord record, double amount) {
         boolean result = false;
-        String sql = "UPDATE tblLoanRecord SET fineAmount = ? WHERE id = ?";
+        String sql = "UPDATE tblloanrecord SET fine_amount = ? WHERE id = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setDouble(1, amount);

@@ -24,10 +24,10 @@ public class ItemDaoTest {
         
         try (Statement stmt = con.createStatement()) {
             stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-            stmt.execute("DELETE FROM tblItem WHERE id = 1");
-            stmt.execute("DELETE FROM tblBook WHERE id = 1");
-            stmt.execute("INSERT INTO tblBook(id, title, price) VALUES(1, 'Lap trinh Java Swing', 50000.0)");
-            stmt.execute("INSERT INTO tblItem(id, barcode, status, bookId) VALUES(1, 'BC001', 'Borrowed', 1)");
+            stmt.execute("DELETE FROM tblitem WHERE id = 1");
+            stmt.execute("DELETE FROM tblbook WHERE id = 1");
+            stmt.execute("INSERT INTO tblbook(id, title, price) VALUES(1, 'Lap trinh Java Swing', 50000.0)");
+            stmt.execute("INSERT INTO tblitem(id, barcode, status, book_id) VALUES(1, 'BC001', 'Borrowed', 1)");
             stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
         }
     }
@@ -37,8 +37,8 @@ public class ItemDaoTest {
         if (con != null) {
             try (Statement stmt = con.createStatement()) {
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-                stmt.execute("DELETE FROM tblItem WHERE id = 1");
-                stmt.execute("DELETE FROM tblBook WHERE id = 1");
+                stmt.execute("DELETE FROM tblitem WHERE id = 1");
+                stmt.execute("DELETE FROM tblbook WHERE id = 1");
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
             }
         }

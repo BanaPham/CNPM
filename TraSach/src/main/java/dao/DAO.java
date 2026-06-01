@@ -8,7 +8,7 @@ public class DAO {
 
     public DAO() {
         if (con == null) {
-            String dbUrl = "jdbc:mysql://localhost:3306/library?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf-8";
+            String dbUrl = "jdbc:mysql://localhost:3306/library_borrow?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf-8";
             String dbClass = "com.mysql.jdbc.Driver";
             try {
                 Class.forName(dbClass);

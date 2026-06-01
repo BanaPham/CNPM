@@ -13,7 +13,7 @@ public class ItemDAO extends DAO {
     public Item searchItemByBarcode(String barcode) {
         Item item = null;
         String sql = "SELECT i.id as item_id, i.barcode, i.status, b.id as book_id, b.title, b.price " +
-                     "FROM tblItem i INNER JOIN tblBook b ON i.bookId = b.id " +
+                     "FROM tblitem i INNER JOIN tblbook b ON i.book_id = b.id " +
                      "WHERE i.barcode = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -39,7 +39,7 @@ public class ItemDAO extends DAO {
 
     public boolean updateItemStatus(Item item, String status) {
         boolean result = false;
-        String sql = "UPDATE tblItem SET status = ? WHERE id = ?";
+        String sql = "UPDATE tblitem SET status = ? WHERE id = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, status);

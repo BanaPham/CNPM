@@ -27,17 +27,17 @@ public class LoanRecordDaoTest {
         
         try (Statement stmt = con.createStatement()) {
             stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-            stmt.execute("DELETE FROM tblLoanDetail WHERE id = 1");
-            stmt.execute("DELETE FROM tblLoanRecord WHERE id = 1");
-            stmt.execute("DELETE FROM tblItem WHERE id = 1");
-            stmt.execute("DELETE FROM tblBook WHERE id = 1");
-            stmt.execute("DELETE FROM tblPatron WHERE id = 1");
+            stmt.execute("DELETE FROM tblloandetail WHERE id = 1");
+            stmt.execute("DELETE FROM tblloanrecord WHERE id = 1");
+            stmt.execute("DELETE FROM tblitem WHERE id = 1");
+            stmt.execute("DELETE FROM tblbook WHERE id = 1");
+            stmt.execute("DELETE FROM tblpatron WHERE id = 1");
             
-            stmt.execute("INSERT INTO tblPatron(id, cardNumber, fullName, outstandingDebt) VALUES(1, 'DG001', 'Nguyen Van A', 15000.0)");
-            stmt.execute("INSERT INTO tblBook(id, title, price) VALUES(1, 'Lap trinh Java Swing', 50000.0)");
-            stmt.execute("INSERT INTO tblItem(id, barcode, status, bookId) VALUES(1, 'BC001', 'Borrowed', 1)");
-            stmt.execute("INSERT INTO tblLoanRecord(id, borrowDate, dueDate, patronId, fineAmount) VALUES(1, '2026-05-10 08:00:00', '2026-05-24 08:00:00', 1, 0.0)");
-            stmt.execute("INSERT INTO tblLoanDetail(id, loanRecordId, itemId, actualReturnDate, fineAmount, statusNotes) VALUES(1, 1, 1, NULL, 0.0, 'Muon moi')");
+            stmt.execute("INSERT INTO tblpatron(id, card_number, full_name, outstanding_debt) VALUES(1, 'DG001', 'Nguyen Van A', 15000.0)");
+            stmt.execute("INSERT INTO tblbook(id, title, price) VALUES(1, 'Lap trinh Java Swing', 50000.0)");
+            stmt.execute("INSERT INTO tblitem(id, barcode, status, book_id) VALUES(1, 'BC001', 'Borrowed', 1)");
+            stmt.execute("INSERT INTO tblloanrecord(id, loan_date, due_date, patron_id, fine_amount) VALUES(1, '2026-05-10 08:00:00', '2026-05-24 08:00:00', 1, 0.0)");
+            stmt.execute("INSERT INTO tblloandetail(id, loan_record_id, item_id, actual_return_date, fine_amount, status_notes) VALUES(1, 1, 1, NULL, 0.0, 'Muon moi')");
             
             stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
         }
@@ -48,11 +48,11 @@ public class LoanRecordDaoTest {
         if (con != null) {
             try (Statement stmt = con.createStatement()) {
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-                stmt.execute("DELETE FROM tblLoanDetail WHERE id = 1");
-                stmt.execute("DELETE FROM tblLoanRecord WHERE id = 1");
-                stmt.execute("DELETE FROM tblItem WHERE id = 1");
-                stmt.execute("DELETE FROM tblBook WHERE id = 1");
-                stmt.execute("DELETE FROM tblPatron WHERE id = 1");
+                stmt.execute("DELETE FROM tblloandetail WHERE id = 1");
+                stmt.execute("DELETE FROM tblloanrecord WHERE id = 1");
+                stmt.execute("DELETE FROM tblitem WHERE id = 1");
+                stmt.execute("DELETE FROM tblbook WHERE id = 1");
+                stmt.execute("DELETE FROM tblpatron WHERE id = 1");
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
             }
         }
