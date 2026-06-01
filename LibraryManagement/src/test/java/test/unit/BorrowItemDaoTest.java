@@ -24,10 +24,10 @@ public class BorrowItemDaoTest {
         
         try (Statement stmt = con.createStatement()) {
             stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-            stmt.execute("DELETE FROM tblitem WHERE id = 1");
-            stmt.execute("DELETE FROM tblbook WHERE id = 1");
-            stmt.execute("INSERT INTO tblbook(id, title, isbn, author) VALUES(1, 'Lap trinh Java Swing', 'ISBN001', 'Nguyen Van C')");
-            stmt.execute("INSERT INTO tblitem(id, barcode, status, price, book_id) VALUES(1, 'BC001', 'Ready', 50000.0, 1)");
+            stmt.execute("DELETE FROM tblitem WHERE id = 999");
+            stmt.execute("DELETE FROM tblbook WHERE id = 999");
+            stmt.execute("INSERT INTO tblbook(id, title, isbn, author) VALUES(999, 'Lap trinh Java Swing', 'ISBN_TEST_001', 'Nguyen Van C')");
+            stmt.execute("INSERT INTO tblitem(id, barcode, status, price, book_id) VALUES(999, 'BC_TEST_001', 'Ready', 50000.0, 999)");
             stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
         }
     }
@@ -37,8 +37,8 @@ public class BorrowItemDaoTest {
         if (con != null) {
             try (Statement stmt = con.createStatement()) {
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-                stmt.execute("DELETE FROM tblitem WHERE id = 1");
-                stmt.execute("DELETE FROM tblbook WHERE id = 1");
+                stmt.execute("DELETE FROM tblitem WHERE id = 999");
+                stmt.execute("DELETE FROM tblbook WHERE id = 999");
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
             }
         }
@@ -46,10 +46,10 @@ public class BorrowItemDaoTest {
 
     @Test
     public void testSearchItemStandard() {
-        String barcode = "BC001";
+        String barcode = "BC_TEST_001";
         Item item = itemDAO.searchItem(barcode);
         Assert.assertNotNull(item);
-        Assert.assertEquals("BC001", item.getBarcode());
+        Assert.assertEquals("BC_TEST_001", item.getBarcode());
         Assert.assertEquals("Ready", item.getStatus());
         Assert.assertNotNull(item.getBook());
         Assert.assertEquals("Lap trinh Java Swing", item.getBook().getTitle());

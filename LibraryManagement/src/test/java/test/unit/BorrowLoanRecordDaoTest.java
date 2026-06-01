@@ -32,17 +32,17 @@ public class BorrowLoanRecordDaoTest {
             stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
             
             // Safe clean up: only delete test records associated with our mock ids
-            stmt.execute("DELETE FROM tblloandetail WHERE item_id = 1");
-            stmt.execute("DELETE FROM tblloanrecord WHERE patron_id = 1 OR librarian_id = 3");
-            stmt.execute("DELETE FROM tblitem WHERE id = 1");
-            stmt.execute("DELETE FROM tblbook WHERE id = 1");
-            stmt.execute("DELETE FROM tblpatron WHERE id = 1");
-            stmt.execute("DELETE FROM tblsystemuser WHERE id = 3");
+            stmt.execute("DELETE FROM tblloandetail WHERE item_id = 999");
+            stmt.execute("DELETE FROM tblloanrecord WHERE patron_id = 999 OR librarian_id = 993");
+            stmt.execute("DELETE FROM tblitem WHERE id = 999");
+            stmt.execute("DELETE FROM tblbook WHERE id = 999");
+            stmt.execute("DELETE FROM tblpatron WHERE id = 999");
+            stmt.execute("DELETE FROM tblsystemuser WHERE id = 993");
             
-            stmt.execute("INSERT INTO tblpatron(id, card_number, full_name, outstanding_debt) VALUES(1, 'DG001', 'Nguyen Van A', 15000.0)");
-            stmt.execute("INSERT INTO tblsystemuser(id, username, password, name, role) VALUES(3, 'librarian1', '123456', 'Nguyen Van D', 'Librarian')");
-            stmt.execute("INSERT INTO tblbook(id, title, isbn, author) VALUES(1, 'Lap trinh Java Swing', 'ISBN001', 'Nguyen Van C')");
-            stmt.execute("INSERT INTO tblitem(id, barcode, status, price, book_id) VALUES(1, 'BC001', 'Ready', 50000.0, 1)");
+            stmt.execute("INSERT INTO tblpatron(id, card_number, full_name, outstanding_debt) VALUES(999, 'DG_TEST_001', 'Nguyen Van A', 15000.0)");
+            stmt.execute("INSERT INTO tblsystemuser(id, username, password, name, role) VALUES(993, 'librarian1', '123456', 'Nguyen Van D', 'Librarian')");
+            stmt.execute("INSERT INTO tblbook(id, title, isbn, author) VALUES(999, 'Lap trinh Java Swing', 'ISBN_TEST_001', 'Nguyen Van C')");
+            stmt.execute("INSERT INTO tblitem(id, barcode, status, price, book_id) VALUES(999, 'BC_TEST_001', 'Ready', 50000.0, 999)");
             
             stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
         }
@@ -53,12 +53,12 @@ public class BorrowLoanRecordDaoTest {
         if (con != null) {
             try (Statement stmt = con.createStatement()) {
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-                stmt.execute("DELETE FROM tblloandetail WHERE item_id = 1");
-                stmt.execute("DELETE FROM tblloanrecord WHERE patron_id = 1 OR librarian_id = 3");
-                stmt.execute("DELETE FROM tblitem WHERE id = 1");
-                stmt.execute("DELETE FROM tblbook WHERE id = 1");
-                stmt.execute("DELETE FROM tblpatron WHERE id = 1");
-                stmt.execute("DELETE FROM tblsystemuser WHERE id = 3");
+                stmt.execute("DELETE FROM tblloandetail WHERE item_id = 999");
+                stmt.execute("DELETE FROM tblloanrecord WHERE patron_id = 999 OR librarian_id = 993");
+                stmt.execute("DELETE FROM tblitem WHERE id = 999");
+                stmt.execute("DELETE FROM tblbook WHERE id = 999");
+                stmt.execute("DELETE FROM tblpatron WHERE id = 999");
+                stmt.execute("DELETE FROM tblsystemuser WHERE id = 993");
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
             }
         }
@@ -67,10 +67,10 @@ public class BorrowLoanRecordDaoTest {
     @Test
     public void testAddLoanRecordStandard() {
         Patron patron = new Patron();
-        patron.setId(1);
+        patron.setId(999);
         
         SystemUser librarian = new SystemUser();
-        librarian.setId(3);
+        librarian.setId(993);
         
         LoanRecord loan = new LoanRecord();
         loan.setPatron(patron);
@@ -79,8 +79,8 @@ public class BorrowLoanRecordDaoTest {
         loan.setDueDate(new Date(System.currentTimeMillis() + 14L * 24 * 60 * 60 * 1000));
         
         Item item = new Item();
-        item.setId(1);
-        item.setBarcode("BC001");
+        item.setId(999);
+        item.setBarcode("BC_TEST_001");
         
         LoanDetail detail = new LoanDetail();
         detail.setItem(item);
@@ -95,7 +95,7 @@ public class BorrowLoanRecordDaoTest {
             
             // Kiem tra trang thai ban sao sach duoc cap nhat thanh "Borrowed"
             ItemDAO itemDAO = new ItemDAO();
-            Item updatedItem = itemDAO.searchItem("BC001");
+            Item updatedItem = itemDAO.searchItem("BC_TEST_001");
             Assert.assertNotNull(updatedItem);
             Assert.assertEquals("Borrowed", updatedItem.getStatus());
             

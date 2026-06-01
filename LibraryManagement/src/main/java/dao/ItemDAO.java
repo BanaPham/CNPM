@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import model.Item;
 import model.Book;
 
@@ -81,6 +82,48 @@ public class ItemDAO extends DAO {
                 result = true;
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    // Method used by OPAC Check Availability (from root src)
+    public ArrayList<Item> checkAvailability(String bookID) {
+        ArrayList<Item> result = new ArrayList<>();
+        if (bookID == null) return result;
+        bookID = bookID.trim();
+
+        String sql = "SELECT i.id as item_id, i.barcode, i.status, s.shelf_id, s.room, s.row " +
+                     "FROM tblitem i " +
+                     "LEFT JOIN tblshelf s ON i.shelf_id = s.id " +
+                     "WHERE i.book_id = ?";
+
+        try {
+            if (con == null || con.isClosed()) {
+                System.err.println("ItemDAO: Database connection is null or closed!");
+                return result;
+            }
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, Integer.parseInt(bookID));
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Item item = new Item();
+                item.setId(rs.getInt("item_id"));
+                item.setBarcode(rs.getString("barcode") != null ? rs.getString("barcode").trim() : "");
+                item.setStatus(rs.getString("status") != null ? rs.getString("status").trim() : "");
+
+                model.Shelf shelf = new model.Shelf();
+                shelf.setShelfID(rs.getString("shelf_id"));
+                shelf.setRoom(rs.getString("room"));
+                shelf.setRow(rs.getString("row"));
+
+                item.setShelf(shelf);
+                result.add(item);
+            }
+            System.out.println("ItemDAO: Querying bookID [" + bookID + "] - Found: " + result.size() + " items.");
+        } catch (Exception e) {
+            System.err.println("ItemDAO error querying bookID " + bookID + ": " + e.getMessage());
             e.printStackTrace();
         }
         return result;

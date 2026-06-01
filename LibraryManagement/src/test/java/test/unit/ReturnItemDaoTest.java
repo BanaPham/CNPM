@@ -24,10 +24,10 @@ public class ReturnItemDaoTest {
         
         try (Statement stmt = con.createStatement()) {
             stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-            stmt.execute("DELETE FROM tblitem WHERE id = 1");
-            stmt.execute("DELETE FROM tblbook WHERE id = 1");
-            stmt.execute("INSERT INTO tblbook(id, title, price) VALUES(1, 'Lap trinh Java Swing', 50000.0)");
-            stmt.execute("INSERT INTO tblitem(id, barcode, status, book_id) VALUES(1, 'BC001', 'Borrowed', 1)");
+            stmt.execute("DELETE FROM tblitem WHERE id = 999");
+            stmt.execute("DELETE FROM tblbook WHERE id = 999");
+            stmt.execute("INSERT INTO tblbook(id, title, price) VALUES(999, 'Lap trinh Java Swing', 50000.0)");
+            stmt.execute("INSERT INTO tblitem(id, barcode, status, book_id) VALUES(999, 'BC_TEST_001', 'Borrowed', 999)");
             stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
         }
     }
@@ -37,8 +37,8 @@ public class ReturnItemDaoTest {
         if (con != null) {
             try (Statement stmt = con.createStatement()) {
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-                stmt.execute("DELETE FROM tblitem WHERE id = 1");
-                stmt.execute("DELETE FROM tblbook WHERE id = 1");
+                stmt.execute("DELETE FROM tblitem WHERE id = 999");
+                stmt.execute("DELETE FROM tblbook WHERE id = 999");
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
             }
         }
@@ -46,10 +46,10 @@ public class ReturnItemDaoTest {
 
     @Test
     public void testSearchItemByBarcodeStandard() {
-        String barcode = "BC001";
+        String barcode = "BC_TEST_001";
         Item item = itemDAO.searchItemByBarcode(barcode);
         Assert.assertNotNull(item);
-        Assert.assertEquals("BC001", item.getBarcode());
+        Assert.assertEquals("BC_TEST_001", item.getBarcode());
         Assert.assertEquals("Borrowed", item.getStatus());
         Assert.assertNotNull(item.getBook());
         Assert.assertEquals("Lap trinh Java Swing", item.getBook().getTitle());
@@ -65,8 +65,8 @@ public class ReturnItemDaoTest {
     @Test
     public void testUpdateItemStatusStandard() {
         Item item = new Item();
-        item.setId(1);
-        item.setBarcode("BC001");
+        item.setId(999);
+        item.setBarcode("BC_TEST_001");
         item.setStatus("Borrowed");
         
         boolean result = itemDAO.updateItemStatus(item, "Ready");

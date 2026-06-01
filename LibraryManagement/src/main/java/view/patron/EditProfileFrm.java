@@ -63,9 +63,19 @@ public class EditProfileFrm extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSave) {
-            p.setPassword(txtPW.getText());
-            p.setAddress(txtAddress.getText());
-            p.setPhone(txtPhone.getText());
+            String pw = txtPW.getText().trim();
+            String address = txtAddress.getText().trim();
+            String phone = txtPhone.getText().trim();
+
+            if (pw.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Mật khẩu, Địa chỉ và SĐT không được để trống!");
+                return;
+            }
+
+            p.setPassword(pw);
+            p.setAddress(address);
+            p.setPhone(phone);
 
             PatronDAO dao = new PatronDAO();
             boolean check = dao.updateProfile(p);

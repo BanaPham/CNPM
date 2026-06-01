@@ -24,8 +24,8 @@ public class PatronDaoTest {
         
         try (Statement stmt = con.createStatement()) {
             stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-            stmt.execute("DELETE FROM tblpatron WHERE id = 1");
-            stmt.execute("INSERT INTO tblpatron(id, card_number, full_name, outstanding_debt) VALUES(1, 'DG001', 'Nguyen Van A', 15000.0)");
+            stmt.execute("DELETE FROM tblpatron WHERE id = 999");
+            stmt.execute("INSERT INTO tblpatron(id, card_number, full_name, outstanding_debt) VALUES(999, 'DG_TEST_001', 'Nguyen Van A', 15000.0)");
             stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
         }
     }
@@ -35,7 +35,7 @@ public class PatronDaoTest {
         if (con != null) {
             try (Statement stmt = con.createStatement()) {
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
-                stmt.execute("DELETE FROM tblpatron WHERE id = 1");
+                stmt.execute("DELETE FROM tblpatron WHERE id = 999");
                 stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
             }
         }
@@ -43,10 +43,10 @@ public class PatronDaoTest {
 
     @Test
     public void testSearchPatronStandard() {
-        String cardNum = "DG001";
+        String cardNum = "DG_TEST_001";
         Patron patron = patronDAO.searchPatron(cardNum);
         Assert.assertNotNull(patron);
-        Assert.assertEquals("DG001", patron.getCardNumber());
+        Assert.assertEquals("DG_TEST_001", patron.getCardNumber());
         Assert.assertEquals("Nguyen Van A", patron.getFullName());
         Assert.assertEquals(15000.0, patron.getOutstandingDebt(), 0.001);
     }

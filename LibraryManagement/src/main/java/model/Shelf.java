@@ -1,18 +1,26 @@
 package model;
 
-public class Shelf {
+import java.io.Serializable;
+
+public class Shelf implements Serializable {
+    private int id;
     private String shelfID;
     private String room;
     private String row;
 
     public Shelf() {
+        super();
     }
 
     public Shelf(String shelfID, String room, String row) {
+        super();
         this.shelfID = shelfID;
         this.room = room;
         this.row = row;
     }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public String getShelfID() { return shelfID; }
     public void setShelfID(String shelfID) { this.shelfID = shelfID; }

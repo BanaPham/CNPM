@@ -13,9 +13,8 @@ public class BookDAO extends DAO {
 
     public ArrayList<Book> searchBook(String key) {
         ArrayList<Book> result = new ArrayList<>();
-        // Use N prefix for Unicode search in SQL Server if needed, 
-        // but PreparedStatement ? with setNString is the standard way.
-        String sql = "SELECT * FROM tblBook WHERE title LIKE ? OR author LIKE ?";
+        // Select from tblbook (MySQL lowercase)
+        String sql = "SELECT * FROM tblbook WHERE title LIKE ? OR author LIKE ?";
 
         try {
             if (con == null || con.isClosed()) {
@@ -24,19 +23,20 @@ public class BookDAO extends DAO {
             }
             PreparedStatement ps = con.prepareStatement(sql);
             String searchKey = "%" + key + "%";
-            ps.setNString(1, searchKey);
-            ps.setNString(2, searchKey);
+            ps.setString(1, searchKey);
+            ps.setString(2, searchKey);
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Book book = new Book();
-                book.setBookID(rs.getString("bookID"));
+                // Map MySQL columns to model fields
+                book.setBookID(String.valueOf(rs.getInt("id")));
                 book.setTitle(rs.getString("title"));
                 book.setAuthor(rs.getString("author"));
                 book.setPublisher(rs.getString("publisher"));
-                book.setPublishYear(rs.getInt("publishYear"));
-                book.setDdcCode(rs.getString("ddcCode"));
-                book.setCoverImage(rs.getString("coverImage"));
+                book.setPublishYear(rs.getInt("publish_year"));
+                book.setDdcCode(rs.getString("ddc_code"));
+                book.setCoverImage(rs.getString("cover_image"));
                 book.setSummary(rs.getString("summary"));
                 book.setPrice(rs.getDouble("price"));
 
