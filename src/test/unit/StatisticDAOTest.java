@@ -69,7 +69,7 @@ public class StatisticDAOTest {
         Assert.assertEquals(12, rows.get(0).length);
         Assert.assertNotNull(rows.get(0)[0]); // loanID
         Assert.assertNotNull(rows.get(0)[3]); // patronName
-        Assert.assertNotNull(rows.get(0)[7]);s // book title
+        Assert.assertNotNull(rows.get(0)[7]); // book title
 	}
  
 	@Test

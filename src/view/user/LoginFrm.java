@@ -78,11 +78,11 @@ public class LoginFrm extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Sai tên đăng nhập hoặc mật khẩu!");
                 return;
         	}
-        	if (!"Active".equalsIgnoreCase(user.getStatus())) {
+        	if (!"active".equalsIgnoreCase(user.getStatus())) {
                 JOptionPane.showMessageDialog(this, "Tài khoản đang bị khóa, không thể đăng nhập!");
                 return;
         	}
-        	if ("Quản trị viên".equalsIgnoreCase(user.getRole())) {
+        	if ("admin".equalsIgnoreCase(user.getRole())) {
             	new AdminHomeFrm(user).setVisible(true);
                 this.dispose();
         	} else {
