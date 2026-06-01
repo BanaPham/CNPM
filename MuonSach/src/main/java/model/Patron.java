@@ -1,0 +1,30 @@
+package model;
+
+import java.io.Serializable;
+
+public class Patron implements Serializable {
+    private int id;
+    private String cardNumber;
+    private String fullName;
+    private float outstandingDebt;
+
+    public Patron() {
+        super();
+    }
+
+    public Patron(String cardNumber, String fullName, float outstandingDebt) {
+        super();
+        this.cardNumber = cardNumber;
+        this.fullName = fullName;
+        this.outstandingDebt = outstandingDebt;
+    }
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getCardNumber() { return cardNumber; }
+    public void setCardNumber(String cardNumber) { this.cardNumber = cardNumber; }
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public float getOutstandingDebt() { return outstandingDebt; }
+    public void setOutstandingDebt(float outstandingDebt) { this.outstandingDebt = outstandingDebt; }
+}
