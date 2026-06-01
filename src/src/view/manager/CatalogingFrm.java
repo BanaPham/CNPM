@@ -1,4 +1,4 @@
-package manager;
+package view.manager;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
