@@ -1,6 +1,8 @@
 package model;
 
-public class Shelf {
+import java.io.Serializable;
+
+public class Shelf implements Serializable {
     private String shelfID;
     private String room;
     private String row;

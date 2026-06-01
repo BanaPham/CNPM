@@ -13,7 +13,8 @@ public class ItemDAO extends DAO {
 
     public ArrayList<Item> createItems(String bookID, String shelfID, int quantity) {
         ArrayList<Item> result = new ArrayList<>();
-        String sql = "INSERT INTO tblItem (itemID, barcode, status, bookID, shelfID) VALUES (?, ?, ?, ?, ?)";
+        // Tên cột theo đúng schema tblItem trong db_library
+        String sql = "INSERT INTO tblItem (itemID, barCode, status, tblBookID, tblShelfID) VALUES (?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
@@ -36,6 +37,8 @@ public class ItemDAO extends DAO {
                 item.setItemID(itemID);
                 item.setBarcode(barcode);
                 item.setStatus("Available");
+                item.setBookID(bookID);
+                item.setShelfID(shelfID);
                 result.add(item);
             }
         } catch (Exception e) {

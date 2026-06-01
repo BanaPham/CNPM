@@ -14,8 +14,9 @@ public class BookDAO extends DAO {
         // Sinh mã sách ngẫu nhiên dựa trên thời gian
         String generatedBookID = "B" + System.currentTimeMillis();
 
-        String sql = "INSERT INTO tblBook (bookID, title, author, isbn, publisher, publishYear, ddcCode, price) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        // SQL theo đúng schema tblBook trong db_library (không có cột author, publisher)
+        String sql = "INSERT INTO tblBook (bookID, title, isbn, publishYear, deDCcode, price, summary) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         if (book == null) {
             return null;
@@ -25,15 +26,14 @@ public class BookDAO extends DAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, generatedBookID);
             ps.setString(2, book.getTitle());
-            ps.setString(3, book.getAuthor());
-            ps.setString(4, book.getIsbn());
-            ps.setString(5, book.getPublisher());
-            ps.setInt(6, book.getPublishYear());
-            ps.setString(7, book.getDdcCode());
-            ps.setDouble(8, book.getPrice());
+            ps.setString(3, book.getIsbn());
+            ps.setInt(4, book.getPublishYear());
+            ps.setString(5, book.getDdcCode());
+            ps.setDouble(6, book.getPrice());
+            ps.setString(7, book.getSummary() != null ? book.getSummary() : "");
 
             int affectedRows = ps.executeUpdate();
-            if(affectedRows > 0) {
+            if (affectedRows > 0) {
                 return generatedBookID; // Thành công trả về mã sách
             }
         } catch (Exception e) {

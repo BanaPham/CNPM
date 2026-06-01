@@ -1,21 +1,23 @@
 package model;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
     private String itemID;
     private String barcode;
     private String status;
-    private Book book;   // Mối quan hệ với Sách
-    private Shelf shelf; // Mối quan hệ với Kệ
+    private String bookID;
+    private String shelfID;
 
     public Item() {
     }
 
-    public Item(String itemID, String barcode, String status, Book book, Shelf shelf) {
+    public Item(String itemID, String barcode, String status, String bookID, String shelfID) {
         this.itemID = itemID;
         this.barcode = barcode;
         this.status = status;
-        this.book = book;
-        this.shelf = shelf;
+        this.bookID = bookID;
+        this.shelfID = shelfID;
     }
 
     public String getItemID() { return itemID; }
@@ -27,9 +29,9 @@ public class Item {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public Book getBook() { return book; }
-    public void setBook(Book book) { this.book = book; }
+    public String getBookID() { return bookID; }
+    public void setBookID(String bookID) { this.bookID = bookID; }
 
-    public Shelf getShelf() { return shelf; }
-    public void setShelf(Shelf shelf) { this.shelf = shelf; }
+    public String getShelfID() { return shelfID; }
+    public void setShelfID(String shelfID) { this.shelfID = shelfID; }
 }

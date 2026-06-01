@@ -3,7 +3,7 @@ package test;
 import dao.ItemDAO;
 import model.Item;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.ArrayList;
 

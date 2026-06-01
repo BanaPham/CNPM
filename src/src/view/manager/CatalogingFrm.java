@@ -19,17 +19,23 @@ import javax.swing.JTextField;
 
 import dao.BookDAO;
 import dao.ItemDAO;
+import dao.ShelfDAO;
 import model.Book;
 import model.Item;
+import model.Shelf;
+import model.SystemUser;
 
 public class CatalogingFrm extends JFrame implements ActionListener {
 
     private JTextField txtTitle, txtAuthor, txtIsbn, txtPublisher, txtPublishYear, txtDdc, txtPrice, txtQuantity;
     private JComboBox<String> cbxShelf;
     private JButton btnSave, btnBack;
+    private SystemUser user;
+    private ArrayList<Shelf> shelfList;
 
-    public CatalogingFrm() {
+    public CatalogingFrm(SystemUser user) {
         super("Biên mục tài liệu mới");
+        this.user = user;
 
         // --- 1. Tạo Panel Nhập liệu ---
         JPanel pnInput = new JPanel(new GridLayout(9, 2, 10, 10));
@@ -57,9 +63,9 @@ public class CatalogingFrm extends JFrame implements ActionListener {
         txtPrice = new JTextField(); pnInput.add(txtPrice);
 
         pnInput.add(new JLabel("Vị trí Kệ lưu trữ (*):"));
-        // Trong thực tế sẽ lấy danh sách Kệ từ DB, ở đây giả lập ID Kệ gắn kèm mô tả
-        String[] shelfList = {"SH001 - Kệ A1", "SH002 - Kệ B2", "SH003 - Kệ C1"};
-        cbxShelf = new JComboBox<>(shelfList);
+        // Load danh sách Kệ thực từ DB
+        cbxShelf = new JComboBox<>();
+        loadShelfList();
         pnInput.add(cbxShelf);
 
         pnInput.add(new JLabel("Số lượng bản sao (*):"));
@@ -85,21 +91,37 @@ public class CatalogingFrm extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    private void loadShelfList() {
+        cbxShelf.removeAllItems();
+        shelfList = new ShelfDAO().getAllShelves();
+        if (shelfList.isEmpty()) {
+            cbxShelf.addItem("(Chưa có kệ trong hệ thống)");
+        } else {
+            for (Shelf s : shelfList) {
+                cbxShelf.addItem(s.getShelfID() + " - Phòng " + s.getRoom() + " - Hàng " + s.getRow());
+            }
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnBack) {
-            new ManagerHomeFrm().setVisible(true);
+            new ManagerHomeFrm(user).setVisible(true);
             this.dispose();
         }
         else if (e.getSource() == btnSave) {
             try {
                 // Bước 1: Validate dữ liệu
-                if(txtTitle.getText().isEmpty() || txtAuthor.getText().isEmpty() || txtIsbn.getText().isEmpty()) {
+                if (txtTitle.getText().isEmpty() || txtAuthor.getText().isEmpty() || txtIsbn.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Vui lòng nhập đủ các trường bắt buộc (*)");
                     return;
                 }
+                if (shelfList == null || shelfList.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Không có kệ nào trong hệ thống! Vui lòng thêm kệ trước.");
+                    return;
+                }
                 int quantity = Integer.parseInt(txtQuantity.getText());
-                if(quantity <= 0) throw new NumberFormatException();
+                if (quantity <= 0) throw new NumberFormatException();
 
                 // Bước 2: Đóng gói dữ liệu vào Model Book
                 Book b = new Book();
@@ -116,8 +138,8 @@ public class CatalogingFrm extends JFrame implements ActionListener {
                 String bookID = bookDAO.addBook(b);
 
                 if (bookID != null) {
-                    // Lấy mã Kệ (Cắt 5 ký tự đầu tiên, VD: "SH001")
-                    String selectedShelfID = cbxShelf.getSelectedItem().toString().substring(0, 5);
+                    // Lấy shelfID thực từ danh sách đã load
+                    String selectedShelfID = shelfList.get(cbxShelf.getSelectedIndex()).getShelfID();
 
                     // Bước 4: Gọi DAO tạo các Bản sao vật lý
                     ItemDAO itemDAO = new ItemDAO();
