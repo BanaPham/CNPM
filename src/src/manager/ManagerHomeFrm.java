@@ -1,4 +1,4 @@
-package view.manager;
+package manager;
 
 import javax.swing.*;
 import java.awt.*;

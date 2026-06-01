@@ -1,9 +1,10 @@
 package test;
 
+import dao.BookDAO;
 import org.junit.Assert;
 import org.junit.Test;
-import dao.BookDAO;
 import model.Book;
+
 
 public class BookDaoTest {
 
