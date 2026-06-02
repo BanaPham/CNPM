@@ -14,16 +14,21 @@ public class ConfirmFrm extends JFrame implements ActionListener {
     private JButton btnConfirm;
     private JButton btnBack;
     private JButton btnCancel;
-    private String actionType; // Thuộc tính bổ sung để nhận diện hành động từ Form trước
+    private String actionType;
+    private SystemUser currentUser;
 
     public ConfirmFrm(Patron p) {
-        this(p, "Thao tác");
+        this(p, "Thao tác", null);
     }
 
-    // Constructor mở rộng để xử lý hành động cụ thể
     public ConfirmFrm(Patron p, String actionType) {
+        this(p, actionType, null);
+    }
+
+    public ConfirmFrm(Patron p, String actionType, SystemUser user) {
         this.p = p;
         this.actionType = actionType;
+        this.currentUser = user;
 
         setTitle("Xác nhận: " + actionType);
         setSize(400, 300);
@@ -57,19 +62,17 @@ public class ConfirmFrm extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SystemUser user = new SystemUser("US01", "admin", "123456", "Manager");
+        SystemUser user = (currentUser != null) ? currentUser : new SystemUser("SU001", "admin", "123456", "Manager");
 
         if (e.getSource() == btnConfirm) {
             PatronDAO dao = new PatronDAO();
 
-            // Xử lý thay đổi dữ liệu của Patron dựa trên hành động được chọn
             if (actionType.equals("Khóa")) {
                 p.setStatus("Locked");
             } else if (actionType.equals("Mở khóa")) {
                 p.setStatus("Active");
             } else if (actionType.equals("Gia hạn")) {
                 p.setStatus("Active");
-                // Thêm 1 năm gia hạn
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(new Date());
                 cal.add(Calendar.YEAR, 1);
@@ -80,20 +83,26 @@ public class ConfirmFrm extends JFrame implements ActionListener {
             if (success) {
                 JOptionPane.showMessageDialog(this, "Thực hiện thành công!");
                 this.dispose();
-                new SystemHomeFrm(user).setVisible(true);
+                if (currentUser != null) {
+                    new view.borrow.LibrarianHomeFrm(currentUser).setVisible(true);
+                } else {
+                    new SystemHomeFrm(user).setVisible(true);
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "Thất bại. Vui lòng kiểm tra lại kết nối.");
             }
 
         } else if (e.getSource() == btnBack) {
             this.dispose();
-            new CardActionFrm(p).setVisible(true);
-
+            new CardActionFrm(p, currentUser).setVisible(true);
 
         } else if (e.getSource() == btnCancel) {
             this.dispose();
-            new SystemHomeFrm(user).setVisible(true);
+            if (currentUser != null) {
+                new view.borrow.LibrarianHomeFrm(currentUser).setVisible(true);
+            } else {
+                new SystemHomeFrm(user).setVisible(true);
+            }
         }
     }
 }
-

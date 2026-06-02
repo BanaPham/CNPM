@@ -1,7 +1,5 @@
 import model.SystemUser;
-import view.borrow.LibrarianHomeFrm;
 import view.Home;
-import view.system.SystemHomeFrm;
 import view.user.LoginFrm;
 
 import javax.swing.*;
@@ -10,11 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Main extends JFrame implements ActionListener {
-    private JButton btnPatron, btnLibrarian, btnCardAdmin, btnSystemAdmin;
+    private JButton btnPatron, btnSystemAdmin;
 
     public Main() {
         setTitle("Hệ thống Quản lý Thư viện");
-        setSize(420, 280);
+        setSize(420, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -25,24 +23,18 @@ public class Main extends JFrame implements ActionListener {
         lblTitle.setBorder(BorderFactory.createEmptyBorder(15, 10, 10, 10));
         add(lblTitle, BorderLayout.NORTH);
 
-        // Buttons Panel - Grid 2x2
+        // Buttons Panel - Grid 1x2 (side by side)
         JPanel pnButtons = new JPanel();
-        pnButtons.setLayout(new GridLayout(2, 2, 10, 10));
-        pnButtons.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
+        pnButtons.setLayout(new GridLayout(1, 2, 15, 10));
+        pnButtons.setBorder(BorderFactory.createEmptyBorder(15, 20, 25, 20));
 
         btnPatron = new JButton("Cổng Độc giả");
+        btnPatron.setFont(new Font("Arial", Font.BOLD, 14));
         btnPatron.addActionListener(this);
         pnButtons.add(btnPatron);
 
-        btnLibrarian = new JButton("Cổng Thủ thư");
-        btnLibrarian.addActionListener(this);
-        pnButtons.add(btnLibrarian);
-
-        btnCardAdmin = new JButton("Quản lý thẻ độc giả");
-        btnCardAdmin.addActionListener(this);
-        pnButtons.add(btnCardAdmin);
-
         btnSystemAdmin = new JButton("Quản trị hệ thống");
+        btnSystemAdmin.setFont(new Font("Arial", Font.BOLD, 14));
         btnSystemAdmin.addActionListener(this);
         pnButtons.add(btnSystemAdmin);
 
@@ -53,16 +45,6 @@ public class Main extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnPatron) {
             new Home().setVisible(true);
-            this.dispose();
-        } else if (e.getSource() == btnLibrarian) {
-            SystemUser librarian = new SystemUser();
-            librarian.setId(1);
-            librarian.setFullName("Nguyễn Văn Thủ Thư");
-            new LibrarianHomeFrm(librarian);
-            this.dispose();
-        } else if (e.getSource() == btnCardAdmin) {
-            SystemUser mockUser = new SystemUser("SU001", "admin", "123456", "Manager");
-            new SystemHomeFrm(mockUser).setVisible(true);
             this.dispose();
         } else if (e.getSource() == btnSystemAdmin) {
             new LoginFrm().setVisible(true);

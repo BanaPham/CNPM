@@ -86,11 +86,14 @@ public class LoginFrm extends JFrame implements ActionListener {
                 new AdminHomeFrm(user).setVisible(true);
                 this.dispose();
             } else if (isLibrarianRole(user.getRole())) {
+                new view.borrow.LibrarianHomeFrm(user).setVisible(true);
+                this.dispose();
+            } else if (isManagerRole(user.getRole())) {
                 new view.manager.ManagerHomeFrm(user).setVisible(true);
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this,
-                    "Tài khoản không có quyền truy cập hệ thống!\nChỉ Admin và Librarian mới được phép đăng nhập.");
+                    "Tài khoản không có quyền truy cập hệ thống!\nChỉ Admin, Librarian và Manager mới được phép đăng nhập.");
             }
         }
     }
@@ -101,6 +104,10 @@ public class LoginFrm extends JFrame implements ActionListener {
 
     private boolean isLibrarianRole(String role) {
         return "librarian".equalsIgnoreCase(role) || "Thủ thư".equalsIgnoreCase(role);
+    }
+
+    private boolean isManagerRole(String role) {
+        return "manager".equalsIgnoreCase(role) || "Quản lý".equalsIgnoreCase(role);
     }
 
     public static void main(String[] args) {
