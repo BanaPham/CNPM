@@ -30,7 +30,7 @@ public class Main extends JFrame implements ActionListener {
         pnButtons.setLayout(new GridLayout(2, 2, 10, 10));
         pnButtons.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
-        btnPatron = new JButton("Cổng Độc giả (OPAC)");
+        btnPatron = new JButton("Cổng Độc giả");
         btnPatron.addActionListener(this);
         pnButtons.add(btnPatron);
 
