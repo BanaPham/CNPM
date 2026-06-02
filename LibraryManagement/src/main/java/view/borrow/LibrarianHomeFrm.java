@@ -59,6 +59,7 @@ public class LibrarianHomeFrm extends JFrame implements ActionListener {
         pnButtons.add(btnCardManagement);
 
         add(pnButtons, BorderLayout.CENTER);
+        setVisible(true);
     }
 
     @Override
