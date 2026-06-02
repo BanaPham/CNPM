@@ -8,6 +8,11 @@ public class SystemUser implements Serializable {
     private String password;
     private String fullName;
     private String role;
+    private String email;
+    private String status = "Active";
+    private java.sql.Date createdDate;
+    private String lockReason;
+    private java.sql.Date lockUntil;
 
     public SystemUser() {
         super();
@@ -65,4 +70,22 @@ public class SystemUser implements Serializable {
             }
         }
     }
+
+    public String getUserID() { return getSystemUserID(); }
+    public void setUserID(String userID) { setSystemUserID(userID); }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public java.sql.Date getCreatedDate() { return createdDate; }
+    public void setCreatedDate(java.sql.Date createdDate) { this.createdDate = createdDate; }
+
+    public String getLockReason() { return lockReason; }
+    public void setLockReason(String lockReason) { this.lockReason = lockReason; }
+
+    public java.sql.Date getLockUntil() { return lockUntil; }
+    public void setLockUntil(java.sql.Date lockUntil) { this.lockUntil = lockUntil; }
 }

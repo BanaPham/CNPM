@@ -15,13 +15,14 @@ public class ShelfDAO extends DAO {
 
     public ArrayList<Shelf> getAllShelves() {
         ArrayList<Shelf> result = new ArrayList<>();
-        String sql = "SELECT shelfID, room, `row` FROM tblShelf ORDER BY shelfID";
+        String sql = "SELECT id, shelf_id, room, `row` FROM tblshelf ORDER BY shelf_id";
         try {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 Shelf shelf = new Shelf();
-                shelf.setShelfID(rs.getString("shelfID"));
+                shelf.setId(rs.getInt("id"));
+                shelf.setShelfID(rs.getString("shelf_id"));
                 shelf.setRoom(rs.getString("room"));
                 shelf.setRow(rs.getString("row"));
                 result.add(shelf);

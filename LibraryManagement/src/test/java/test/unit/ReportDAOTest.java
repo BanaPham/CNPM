@@ -1,4 +1,4 @@
-package test;
+package test.unit;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;

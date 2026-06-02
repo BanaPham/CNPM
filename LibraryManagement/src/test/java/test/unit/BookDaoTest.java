@@ -1,12 +1,26 @@
-package test;
+package test.unit;
 
 import dao.BookDAO;
+import dao.DAO;
 import org.junit.Assert;
+import org.junit.After;
 import org.junit.Test;
 import model.Book;
 
+import java.sql.Connection;
+import java.sql.Statement;
 
 public class BookDaoTest {
+
+    @After
+    public void tearDown() throws Exception {
+        Connection con = DAO.con;
+        if (con != null) {
+            try (Statement st = con.createStatement()) {
+                st.executeUpdate("DELETE FROM tblbook WHERE isbn = '978-0596009205'");
+            }
+        }
+    }
 
     // Test trường hợp 1: Dữ liệu sách đầu vào hợp lệ
     @Test

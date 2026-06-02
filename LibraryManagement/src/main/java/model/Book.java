@@ -12,6 +12,7 @@ public class Book implements Serializable {
     private String ddcCode;
     private String coverImage;
     private String summary;
+    private String isbn;
 
     public Book() {
         super();
@@ -72,4 +73,7 @@ public class Book implements Serializable {
 
     public String getSummary() { return summary; }
     public void setSummary(String summary) { this.summary = summary; }
+
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
 }

@@ -49,15 +49,15 @@ public class StatisticDAO extends DAO {
     public ArrayList<String[]> getStatistic(Date startDate, Date endDate) {
         ArrayList<String[]> result = new ArrayList<String[]>();
 
-        String sqlActivePatron = "SELECT COUNT(*) FROM tblPatron WHERE expiryDate >= CURRENT_DATE()";
-        String sqlLoan = "SELECT COUNT(*) FROM tblLoanRecord WHERE loanDate >= ? AND loanDate <= ?";
-        String sqlOverdue = "SELECT COUNT(*) FROM tblLoanDetail ld, tblLoanRecord lr "
-                + "WHERE ld.tblLoanRecordID = lr.loanID AND ld.returnDate IS NULL AND lr.dueDate < CURRENT_DATE() "
-                + "AND lr.loanDate >= ? AND lr.loanDate <= ?";
-        String sqlFine = "SELECT IFNULL(SUM(fineAmount), 0) FROM tblLoanRecord WHERE loanDate >= ? AND loanDate <= ?";
-        String sqlBook = "SELECT COUNT(*) FROM tblBook";
-        String sqlBorrowingItem = "SELECT COUNT(*) FROM tblLoanDetail WHERE returnDate IS NULL";
-        String sqlReservation = "SELECT COUNT(*) FROM tblReservation WHERE resDate >= ? AND resDate <= ?";
+        String sqlActivePatron = "SELECT COUNT(*) FROM tblpatron WHERE expiry_date >= CURRENT_DATE()";
+        String sqlLoan = "SELECT COUNT(*) FROM tblloanrecord WHERE loan_date >= ? AND loan_date <= ?";
+        String sqlOverdue = "SELECT COUNT(*) FROM tblloandetail ld, tblloanrecord lr "
+                + "WHERE ld.loan_record_id = lr.id AND ld.actual_return_date IS NULL AND lr.due_date < CURRENT_DATE() "
+                + "AND lr.loan_date >= ? AND lr.loan_date <= ?";
+        String sqlFine = "SELECT IFNULL(SUM(fine_amount), 0) FROM tblloanrecord WHERE loan_date >= ? AND loan_date <= ?";
+        String sqlBook = "SELECT COUNT(*) FROM tblbook";
+        String sqlBorrowingItem = "SELECT COUNT(*) FROM tblloandetail WHERE actual_return_date IS NULL";
+        String sqlReservation = "SELECT COUNT(*) FROM tblreservation WHERE res_date >= ? AND res_date <= ?";
 
         result.add(new String[] { "Tổng số thẻ đang hoạt động", String.valueOf(getIntValue(sqlActivePatron, null, null)) });
         result.add(new String[] { "Số lượt mượn trong khoảng thời gian", String.valueOf(getIntValue(sqlLoan, startDate, endDate)) });
@@ -71,16 +71,16 @@ public class StatisticDAO extends DAO {
 
     public ArrayList<String[]> getLoanDetailReport(Date startDate, Date endDate) {
         ArrayList<String[]> result = new ArrayList<String[]>();
-        String sql = "SELECT lr.loanID, lr.loanDate, lr.dueDate, lr.fineAmount, "
-                + "su.fullName AS librarianName, p.name AS patronName, "
-                + "ld.tblItemID, ld.returnDate, ld.conditionNote, "
-                + "i.barCode, i.status AS itemStatus, b.title, s.room, s.`row` "
-                + "FROM tblLoanRecord lr, tblSystemUser su, tblPatron p, tblLoanDetail ld, tblItem i, tblBook b, tblShelf s "
-                + "WHERE lr.tblSystemUserID = su.userID AND lr.tblPatronID = p.patronID "
-                + "AND ld.tblLoanRecordID = lr.loanID AND ld.tblItemID = i.itemID "
-                + "AND i.tblBookID = b.bookID AND i.tblShelfID = s.shelfID "
-                + "AND lr.loanDate >= ? AND lr.loanDate <= ? "
-                + "ORDER BY lr.loanDate DESC, lr.loanID, ld.tblItemID";
+        String sql = "SELECT lr.id AS loanID, lr.loan_date AS loanDate, lr.due_date AS dueDate, lr.fine_amount AS fineAmount, "
+                + "su.name AS librarianName, p.full_name AS patronName, "
+                + "ld.item_id AS tblItemID, ld.actual_return_date AS returnDate, ld.status_notes AS conditionNote, "
+                + "i.barcode AS barCode, i.status AS itemStatus, b.title, s.room, s.`row` "
+                + "FROM tblloanrecord lr, tblsystemuser su, tblpatron p, tblloandetail ld, tblitem i, tblbook b, tblshelf s "
+                + "WHERE lr.librarian_id = su.id AND lr.patron_id = p.id "
+                + "AND ld.loan_record_id = lr.id AND ld.item_id = i.id "
+                + "AND i.book_id = b.id AND i.shelf_id = s.id "
+                + "AND lr.loan_date >= ? AND lr.loan_date <= ? "
+                + "ORDER BY lr.loan_date DESC, lr.id, ld.item_id";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setDate(1, startDate);

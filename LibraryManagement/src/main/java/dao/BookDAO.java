@@ -49,4 +49,36 @@ public class BookDAO extends DAO {
         }
         return result;
     }
+
+    public String addBook(Book book) {
+        if (book == null) {
+            return null;
+        }
+        String sql = "INSERT INTO tblbook (title, author, isbn, publisher, publish_year, ddc_code, price, cover_image, summary) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, book.getTitle());
+            ps.setString(2, book.getAuthor());
+            ps.setString(3, book.getIsbn());
+            ps.setString(4, book.getPublisher());
+            ps.setInt(5, book.getPublishYear());
+            ps.setString(6, book.getDdcCode());
+            ps.setDouble(7, book.getPrice());
+            ps.setString(8, book.getCoverImage());
+            ps.setString(9, book.getSummary());
+
+            int affected = ps.executeUpdate();
+            if (affected > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    book.setId(id);
+                    return "B" + id;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -8,6 +8,8 @@ public class Item implements Serializable {
     private String status;
     private Book book;
     private Shelf shelf;
+    private String bookID;
+    private String shelfID;
 
     public Item() {
         super();
@@ -43,4 +45,10 @@ public class Item implements Serializable {
             }
         }
     }
+
+    public String getBookID() { return bookID; }
+    public void setBookID(String bookID) { this.bookID = bookID; }
+
+    public String getShelfID() { return shelfID; }
+    public void setShelfID(String shelfID) { this.shelfID = shelfID; }
 }

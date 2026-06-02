@@ -1,9 +1,8 @@
-package test;
+package test.unit;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
-
 import java.util.ArrayList;
 
 import org.junit.Assert;
@@ -20,7 +19,7 @@ public class SystemUserDAOTest {
     public void testCheckLoginAdminActive() {
         SystemUser user = sud.checkLogin("user001", "pass001");
         Assert.assertNotNull(user);
-        Assert.assertEquals("U001", user.getUserID());
+        Assert.assertEquals("US1", user.getUserID());
         Assert.assertEquals("Quản trị viên", user.getRole());
         Assert.assertEquals("Active", user.getStatus());
     }
@@ -49,7 +48,7 @@ public class SystemUserDAOTest {
 
     @Test
     public void testGetSystemUserDetailStandard() {
-        SystemUser user = sud.getSystemUserDetail("U001");
+        SystemUser user = sud.getSystemUserDetail("US1");
         Assert.assertNotNull(user);
         Assert.assertEquals("user001", user.getUsername());
         Assert.assertEquals("Quản trị viên", user.getRole());
@@ -57,7 +56,7 @@ public class SystemUserDAOTest {
 
     @Test
     public void testGetSystemUserDetailNotFound() {
-        SystemUser user = sud.getSystemUserDetail("U999");
+        SystemUser user = sud.getSystemUserDetail("US999");
         Assert.assertNull(user);
     }
 
@@ -67,10 +66,10 @@ public class SystemUserDAOTest {
         try {
             con.setAutoCommit(false);
             Date until = Date.valueOf("2026-12-31");
-            boolean result = sud.lockUser("U002", "JUnit test lock", until);
+            boolean result = sud.lockUser("US2", "JUnit test lock", until);
             Assert.assertTrue(result);
 
-            SystemUser user = sud.getSystemUserDetail("U002");
+            SystemUser user = sud.getSystemUserDetail("US2");
             Assert.assertEquals("Locked", user.getStatus());
             Assert.assertEquals("JUnit test lock", user.getLockReason());
             Assert.assertEquals(until, user.getLockUntil());
@@ -92,11 +91,11 @@ public class SystemUserDAOTest {
         Connection con = DAO.con;
         try {
             con.setAutoCommit(false);
-            sud.lockUser("U002", "JUnit test lock", Date.valueOf("2026-12-31"));
-            boolean result = sud.unlockUser("U002");
+            sud.lockUser("US2", "JUnit test lock", Date.valueOf("2026-12-31"));
+            boolean result = sud.unlockUser("US2");
             Assert.assertTrue(result);
 
-            SystemUser user = sud.getSystemUserDetail("U002");
+            SystemUser user = sud.getSystemUserDetail("US2");
             Assert.assertEquals("Active", user.getStatus());
             Assert.assertNull(user.getLockReason());
             Assert.assertNull(user.getLockUntil());
@@ -118,10 +117,10 @@ public class SystemUserDAOTest {
         Connection con = DAO.con;
         try {
             con.setAutoCommit(false);
-            boolean result = sud.updateRole("U003", "Thủ thư");
+            boolean result = sud.updateRole("US3", "Thủ thư");
             Assert.assertTrue(result);
 
-            SystemUser user = sud.getSystemUserDetail("U003");
+            SystemUser user = sud.getSystemUserDetail("US3");
             Assert.assertEquals("Thủ thư", user.getRole());
         } catch (Exception e) {
             e.printStackTrace();
@@ -142,12 +141,12 @@ public class SystemUserDAOTest {
         try {
             con.setAutoCommit(false);
             PreparedStatement ps = con.prepareStatement(
-                "UPDATE tblSystemUser SET status='Locked' " +
-                "WHERE role='Quản trị viên' AND userID <> 'U001'");
+                "UPDATE tblsystemuser SET status='Locked' " +
+                "WHERE role='Admin' AND id <> 1");
             ps.executeUpdate();
 
             Assert.assertEquals(1, sud.countActiveAdmin());
-            Assert.assertFalse(sud.canLockUser("U001"));
+            Assert.assertFalse(sud.canLockUser("US1"));
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();

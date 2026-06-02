@@ -128,4 +128,67 @@ public class ItemDAO extends DAO {
         }
         return result;
     }
+
+    private int extractIntId(String strId) {
+        if (strId == null) return 0;
+        String numeric = strId.replaceAll("[^0-9]", "");
+        if (!numeric.isEmpty()) {
+            try {
+                return Integer.parseInt(numeric);
+            } catch (NumberFormatException e) {
+                // Ignore
+            }
+        }
+        return 0;
+    }
+
+    public ArrayList<Item> createItems(String bookID, String shelfID, int quantity) {
+        ArrayList<Item> result = new ArrayList<>();
+        String sql = "INSERT INTO tblitem (barcode, status, price, book_id, shelf_id) VALUES (?, ?, ?, ?, ?)";
+
+        double price = 0.0;
+        try {
+            PreparedStatement psBook = con.prepareStatement("SELECT price FROM tblbook WHERE id = ?");
+            psBook.setInt(1, extractIntId(bookID));
+            ResultSet rsBook = psBook.executeQuery();
+            if (rsBook.next()) {
+                price = rsBook.getDouble("price");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+
+            for (int i = 0; i < quantity; i++) {
+                String itemID = "ITM" + System.currentTimeMillis() + i;
+                String barcode = "BC-" + itemID;
+
+                ps.setString(1, barcode);
+                ps.setString(2, "Ready");
+                ps.setDouble(3, price);
+                ps.setInt(4, extractIntId(bookID));
+                ps.setInt(5, extractIntId(shelfID));
+
+                ps.executeUpdate();
+                ResultSet rsKeys = ps.getGeneratedKeys();
+                int insertedId = 0;
+                if (rsKeys.next()) {
+                    insertedId = rsKeys.getInt(1);
+                }
+
+                Item item = new Item();
+                item.setId(insertedId);
+                item.setBarcode(barcode);
+                item.setStatus("Ready");
+                item.setBookID(bookID);
+                item.setShelfID(shelfID);
+                result.add(item);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
